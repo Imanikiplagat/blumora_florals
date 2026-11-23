@@ -1,5 +1,6 @@
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 import {
   LayoutDashboard,
@@ -153,7 +154,11 @@ function AdminLayout() {
    * Sign out
    */
   const handleSignOut = async () => {
-    await signOut();
+    const result = await signOut();
+    if (result.error) {
+      toast.error(result.error);
+      return;
+    }
     navigate("/");
   };
 

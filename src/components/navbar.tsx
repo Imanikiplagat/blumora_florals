@@ -9,12 +9,14 @@ import {
   LayoutDashboard,
   Shield,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect} from "react";
 
 import { Button } from "@/components/ui/button";
+import { brandLogoUrl } from "@/lib/brand";
 import { useCart } from "@/lib/cart-context";
 import { useFavorites } from "@/lib/favourites-context";
 import { useAuth } from "@/lib/auth-context";
+import { toast } from "sonner";
 
 import {
   DropdownMenu,
@@ -35,8 +37,21 @@ export function Navbar() {
   const { count, setOpen } = useCart();
   const { favorites } = useFavorites();
   const { user, role, signOut } = useAuth();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
   const [mobile, setMobile] = useState(false);
+const [scrolled, setScrolled] = useState(false);
+
+useEffect(() => {
+  const handleScroll = () => {
+    setScrolled(window.scrollY > 50);
+  };
+
+  window.addEventListener("scroll", handleScroll);
+
+  return () => {
+    window.removeEventListener("scroll", handleScroll);
+  };
+}, []);
 
   const initials =
     (user?.user_metadata?.full_name as string | undefined)
@@ -48,17 +63,25 @@ export function Navbar() {
     "U";
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/80 backdrop-blur-xl">
+    <header
+  className={`fixed top-0 left-0 z-40 w-full transition-all duration-300 ${
+    scrolled
+      ? "border-b border-olive/10 bloom-gradient backdrop-blur-xl"
+      : "border-b border-transparent bg-transparent"
+  }`}
+>
       <div className="mx-auto grid max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-4 px-4 py-4 sm:px-6 lg:px-8">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
-          <span className="grid h-15 w-15 shrink-0 place-items-center rounded-full bg-white">
-            <img
-              src="/neww.png"
-              alt="Blumora"
-              className="h-8 w-8 object-contain"
-            />
-          </span>       
+        <Link
+          to="/"
+          aria-label="Blumora home"
+          className="flex items-center text-olive"
+        >
+          <img
+            src={brandLogoUrl}
+            alt="Blumora Florals"
+            className="h-16 w-16 shrink-0 object-contain"
+          />
         </Link>
 
         {/* Desktop Navigation */}
@@ -201,7 +224,11 @@ export function Navbar() {
                 {/* Sign Out */}
                 <DropdownMenuItem
                   onClick={async () => {
-                    await signOut();
+                    const result = await signOut();
+                    if (result.error) {
+                      toast.error(result.error);
+                      return;
+                    }
                     navigate("/");
                   }}
                 >

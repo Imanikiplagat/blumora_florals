@@ -305,11 +305,11 @@
   }
 
   /* Footer text should never be too faint */
-  footer {
+  .site-footer {
     color: #4a443c;
   }
 
-  footer .text-muted-foreground {
+  .site-footer .text-muted-foreground {
     color: #665e54;
   }
 }
@@ -368,37 +368,37 @@ nav a[href*="login"] {
    FOOTER
    ========================================================= */
 
-footer {
-  background-color: #383a27;
-  color: #f8f1e8;
+.site-footer {
+  background-color: var(--cream);
+  color: var(--espresso);
 }
 
-footer h2,
-footer h3,
-footer h4 {
-  color: #fffaf3;
+.site-footer h2,
+.site-footer h3,
+.site-footer h4 {
+  color: var(--olive);
 }
 
-footer p,
-footer span {
-  color: #e2d8ca;
+.site-footer p,
+.site-footer span {
+  color: var(--espresso);
 }
 
-footer a {
-  color: #e2d8ca;
+.site-footer a {
+  color: var(--espresso);
   transition: color 0.2s ease;
 }
 
-footer a:hover {
-  color: #e7c7bc;
+.site-footer a:hover {
+  color: var(--deep-rose);
 }
 
-footer .text-muted-foreground {
-  color: #d2c7b9 !important;
+.site-footer .text-muted-foreground {
+  color: #665e54 !important;
 }
 
 /* Footer secondary text */
-footer .text-foreground\/60,
-footer .text-foreground\/70 {
-  color: #d2c7b9 !important;
+.site-footer .text-foreground\/60,
+.site-footer .text-foreground\/70 {
+  color: #665e54 !important;
 }

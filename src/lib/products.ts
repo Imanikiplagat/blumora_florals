@@ -1,13 +1,19 @@
 import { useCallback, useEffect, useState } from "react";
 
-import peony from "@/assets/flower-peony.jpg";
-import roses from "@/assets/flower-roses.jpg";
-import lilies from "@/assets/flower-lilies.jpg";
-import wild from "@/assets/flower-wild.jpg";
-import sunflower from "@/assets/flower-sunflower.jpg";
-import tulips from "@/assets/flower-tulips.jpg";
-
 import { supabase } from "@/intergrations/supabase/client";
+
+export const flowerImageUrls = {
+  roseBouquet: "https://ik.imagekit.io/blumoraFlorals/ImageKit/1.jpeg",
+  daisies: "https://ik.imagekit.io/blumoraFlorals/ImageKit/2.jpeg",
+  yellowBouquet: "https://ik.imagekit.io/blumoraFlorals/ImageKit/3.jpeg",
+  wrappedRoses: "https://ik.imagekit.io/blumoraFlorals/ImageKit/4.jpeg",
+  roseGiftBouquet: "https://ik.imagekit.io/blumoraFlorals/ImageKit/5.jpeg",
+  luxuryRoseBouquet: "https://ik.imagekit.io/blumoraFlorals/ImageKit/7.jpeg",
+  mixedBouquet: "https://ik.imagekit.io/blumoraFlorals/ImageKit/8.jpeg",
+  purpleMums: "https://ik.imagekit.io/blumoraFlorals/ImageKit/9.jpeg",
+  purpleMumsBouquet:
+    "https://ik.imagekit.io/blumoraFlorals/ImageKit/purple%20mums.jpeg",
+} as const;
 
 export type Product = {
   id: string;
@@ -28,12 +34,16 @@ export type Product = {
 };
 
 export const imageMap: Record<string, string> = {
-  peony,
-  roses,
-  lilies,
-  wild,
-  sunflower,
-  tulips,
+  peony: flowerImageUrls.mixedBouquet,
+  roses: flowerImageUrls.roseBouquet,
+  lilies: flowerImageUrls.mixedBouquet,
+  wild: flowerImageUrls.daisies,
+  sunflower: flowerImageUrls.yellowBouquet,
+  tulips: flowerImageUrls.wrappedRoses,
+  "rose-gift": flowerImageUrls.roseGiftBouquet,
+  "rose-luxe": flowerImageUrls.luxuryRoseBouquet,
+  "purple-mums": flowerImageUrls.purpleMumsBouquet,
+  "purple-mums-closeup": flowerImageUrls.purpleMums,
 };
 
 const fallbackProducts: Product[] = [
@@ -44,7 +54,7 @@ const fallbackProducts: Product[] = [
     description:
       "An airy bouquet of roses and premium greens for romantic occasions.",
     price: 3200,
-    image: peony,
+    image: flowerImageUrls.roseBouquet,
     category: "Roses",
     occasion: ["Anniversary", "Birthday"],
     colors: ["Pink", "Cream"],
@@ -61,7 +71,7 @@ const fallbackProducts: Product[] = [
     description:
       "A cheerful arrangement designed for joyful moments and warm greetings.",
     price: 2800,
-    image: sunflower,
+    image: flowerImageUrls.yellowBouquet,
     category: "Seasonal",
     occasion: ["Congratulations", "Just Because"],
     colors: ["Yellow", "Orange"],
@@ -78,7 +88,7 @@ const fallbackProducts: Product[] = [
     description:
       "A textured bouquet with wildflowers and seasonal greens for a natural look.",
     price: 2600,
-    image: wild,
+    image: flowerImageUrls.daisies,
     category: "Wildflowers",
     occasion: ["Housewarming", "Thank You"],
     colors: ["White", "Green"],
@@ -95,7 +105,7 @@ const fallbackProducts: Product[] = [
     description:
       "A graceful floral arrangement for romantic and formal celebrations.",
     price: 3000,
-    image: lilies,
+    image: flowerImageUrls.mixedBouquet,
     category: "Lilies",
     occasion: ["Romance", "Sympathy"],
     colors: ["White", "Burgundy"],
@@ -112,7 +122,7 @@ const fallbackProducts: Product[] = [
     description:
       "A modern bouquet with bold color and sleek presentation.",
     price: 2400,
-    image: tulips,
+    image: flowerImageUrls.purpleMumsBouquet,
     category: "Tulips",
     occasion: ["Birthday", "Congratulations"],
     colors: ["Pink", "Burgundy"],
@@ -129,7 +139,7 @@ const fallbackProducts: Product[] = [
     description:
       "A timeless favorite for special occasions and heartfelt gifting.",
     price: 3500,
-    image: roses,
+    image: flowerImageUrls.wrappedRoses,
     category: "Roses",
     occasion: ["Anniversary", "Romance"],
     colors: ["Pink", "White"],
@@ -151,7 +161,7 @@ export function resolveImage(row: {
     return imageMap[row.image_key];
   }
 
-  return peony;
+  return flowerImageUrls.roseBouquet;
 }
 
 type ProductRow = {
@@ -442,12 +452,12 @@ export function useDeleteProduct() {
 /* -------------------------------------------------------------------------- */
 
 export const categories = [
-  { name: "Roses", image: roses, count: 24 },
-  { name: "Peonies", image: peony, count: 12 },
-  { name: "Lilies", image: lilies, count: 18 },
-  { name: "Wildflowers", image: wild, count: 21 },
-  { name: "Seasonal", image: sunflower, count: 9 },
-  { name: "Tulips", image: tulips, count: 15 },
+  { name: "Roses", image: flowerImageUrls.roseGiftBouquet, count: 24 },
+  { name: "Peonies", image: flowerImageUrls.mixedBouquet, count: 12 },
+  { name: "Lilies", image: flowerImageUrls.mixedBouquet, count: 18 },
+  { name: "Wildflowers", image: flowerImageUrls.daisies, count: 21 },
+  { name: "Seasonal", image: flowerImageUrls.purpleMumsBouquet, count: 9 },
+  { name: "Tulips", image: flowerImageUrls.yellowBouquet, count: 15 },
 ] as const;
 
 export const occasions = [

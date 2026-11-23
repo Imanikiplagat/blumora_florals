@@ -30,7 +30,11 @@ type AuthCtx = {
 
   signInWithGoogle: () => Promise<{ error?: string }>;
 
-  signOut: () => Promise<void>;
+  requestPasswordReset: (email: string) => Promise<{ error?: string }>;
+
+  updatePassword: (password: string) => Promise<{ error?: string }>;
+
+  signOut: () => Promise<{ error?: string }>;
 };
 
 const Ctx = createContext<AuthCtx | null>(null);
@@ -147,8 +151,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return error ? { error: error.message } : {};
   };
 
-  const signOut = async () => {
-    await supabase.auth.signOut();
+  const requestPasswordReset: AuthCtx["requestPasswordReset"] = async (
+    email
+  ) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+
+    return error ? { error: error.message } : {};
+  };
+
+  const updatePassword: AuthCtx["updatePassword"] = async (password) => {
+    const { error } = await supabase.auth.updateUser({ password });
+
+    return error ? { error: error.message } : {};
+  };
+
+  const signOut: AuthCtx["signOut"] = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      return error ? { error: error.message } : {};
+    } catch (error) {
+      return {
+        error:
+          error instanceof Error ? error.message : "Could not sign out.",
+      };
+    }
   };
 
   return (
@@ -162,6 +190,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signInWithEmail,
         signUpWithEmail,
         signInWithGoogle,
+        requestPasswordReset,
+        updatePassword,
         signOut,
       }}
     >

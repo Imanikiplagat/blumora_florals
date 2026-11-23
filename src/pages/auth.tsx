@@ -1,38 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Flower2, Eye, EyeOff, Check, X } from "lucide-react";
+import {  Eye, EyeOff, Check, X } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
+import { PASSWORD_REQUIREMENTS } from "@/lib/password-requirements";
+import { isGoogleProviderEnabled } from "@/intergrations/supabase/client";
 import { toast } from "sonner";
-
-const PASSWORD_REQUIREMENTS = [
-  {
-    id: "length",
-    label: "At least 8 characters",
-    test: (v: string) => v.length >= 8,
-  },
-  {
-    id: "uppercase",
-    label: "One uppercase letter",
-    test: (v: string) => /[A-Z]/.test(v),
-  },
-  {
-    id: "lowercase",
-    label: "One lowercase letter",
-    test: (v: string) => /[a-z]/.test(v),
-  },
-  {
-    id: "number",
-    label: "One number",
-    test: (v: string) => /[0-9]/.test(v),
-  },
-  {
-    id: "special",
-    label: "One special character (!@#$%^&*)",
-    test: (v: string) =>
-      /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(v),
-  },
-];
 
 function AuthPage() {
   const [mode, setMode] = useState<"signin" | "signup">("signin");
@@ -120,10 +93,22 @@ function AuthPage() {
     setLoading(true);
 
     try {
+      const enabled = await isGoogleProviderEnabled();
+      if (!enabled) {
+        toast.error(
+          "Google sign-in is disabled in Supabase. Configure Google under Authentication > Sign-in Providers."
+        );
+        return;
+      }
+
       const res = await signInWithGoogle();
 
       if (res.error) {
-        toast.error(res.error);
+        toast.error(
+          res.error.toLowerCase().includes("provider is not enabled")
+            ? "Google sign-in is not enabled in Supabase. Configure Google under Authentication > Sign-in Providers."
+            : res.error
+        );
       }
     } catch (error) {
       toast.error(
@@ -140,9 +125,7 @@ function AuthPage() {
     <div className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-md flex-col justify-center px-4 py-16 sm:px-6">
       {/* Logo / Header */}
       <div className="text-center">
-        <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-[color:var(--burgundy)] text-white">
-          <Flower2 className="h-5 w-5" />
-        </span>
+      
 
         <h1 className="mt-4 font-display text-4xl text-[color:var(--burgundy)]">
           {mode === "signin"

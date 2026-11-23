@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { Search, SlidersHorizontal } from "lucide-react";
-
 import { ProductCard } from "@/components/product-card";
 import {
   useProducts,

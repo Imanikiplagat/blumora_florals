@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight,  Sparkles,  Truck,  Heart,  Flower2,  Star,} from "lucide-react";
+import { ArrowRight, Truck,  Heart,  Flower2,  Star,} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/product-card";
-import { useProducts, categories } from "@/lib/products";
-import hero from "@/assets/hero-bouquet.jpg";
+import { useProducts, categories, flowerImageUrls } from "@/lib/products";
+import AccordionGallery from "@/components/ui/accordionGallery";
 
 const testimonials = [
   {
@@ -45,138 +45,109 @@ const steps = [
   },
 ];
 
+
 export default function Home() {
   const { data: products = [] } = useProducts();
+  
 
   const featured = products.slice(0, 3);
   const bestSellers = products.slice(2, 6);
 
   return (
     <div>
-      {/* HERO */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bloom-gradient" />
+{/* HERO */}
+<section className="relative overflow-hidden pt-[110px]">
+  <div className="absolute inset-0 bloom-gradient" />
 
-        <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-24">
-          {/* Hero content */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="flex flex-col justify-center"
-          >
-            <span className="inline-flex w-fit items-center gap-2 rounded-full bg-white/80 px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-olive backdrop-blur">
-              <Sparkles className="h-3 w-3" />
-              New spring collection
-            </span>
+  <div className="relative mx-auto grid min-h-[calc(100vh-110px)] max-w-7xl grid-cols-2 items-center gap-12 px-8 lg:gap-16 lg:px-8">
 
-            <h1 className="mt-6 font-display text-5xl leading-[1.05] text-olive sm:text-6xl lg:text-7xl">
-              Beautiful flowers{" "}
-              <em className="italic text-deep-rose">
-                for every moment.
-              </em>
-            </h1>
+    {/* Hero content */}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7 }}
+      className="flex flex-col justify-center"
+    >
+      <h1 className="font-display text-4xl leading-[1.02] text-olive sm:text-5xl lg:text-6xl xl:text-7xl">
+        Beautiful flowers{" "}
+        <em className="italic text-deep-rose">
+          for every moment.
+        </em>
+      </h1>
 
-            <p className="mt-6 max-w-md text-lg text-espresso/70">
-              Hand-tied bouquets, custom arrangements, and
-              same-day delivery from local florists. Because the
-              best moments deserve to bloom.
-            </p>
+      <p className="mt-5 max-w-xl text-base leading-relaxed text-espresso/70 lg:text-lg">
+        Hand-tied bouquets, custom arrangements, and same-day
+        delivery from local florists. Because the best moments
+        deserve to bloom.
+      </p>
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button
-                asChild
-                size="lg"
-                className="rounded-full bg-olive px-8 text-white hover:bg-deep-olive"
-              >
-                <Link to="/shop">
-                  Shop flowers
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
+      <div className="mt-6 flex flex-wrap gap-3">
+        <Button
+          asChild
+          size="lg"
+          className="rounded-full bg-olive px-8 text-white hover:bg-deep-olive"
+        >
+          <Link to="/shop">
+            Shop flowers
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Link>
+        </Button>
 
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="rounded-full border-olive/30 bg-white/70 px-8 text-olive hover:bg-white"
-              >
-                <Link to="/custom">
-                  Create custom bouquet
-                </Link>
-              </Button>
-            </div>
+        <Button
+          asChild
+          size="lg"
+          variant="outline"
+          className="rounded-full border-olive/30 bg-white/70 px-8 text-olive hover:bg-white"
+        >
+          <Link to="/custom">
+            Create custom bouquet
+          </Link>
+        </Button>
+      </div>
 
-            {/* Rating */}
-            <div className="mt-10 flex items-center gap-6 text-sm text-espresso/60">
-              <div className="flex items-center gap-1.5">
-                <div className="flex">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className="h-4 w-4 fill-gold text-gold"
-                    />
-                  ))}
-                </div>
-
-                <span className="font-medium text-espresso">
-                  4.9
-                </span>
-
-                <span>· 2,400+ reviews</span>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Hero image */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              duration: 0.9,
-              delay: 0.1,
-            }}
-            className="relative"
-          >
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] shadow-petal">
-              <img
-                src={hero}
-                alt="Luxury bouquet"
-                className="h-full w-full object-cover"
-                width={1600}
-                height={1200}
+      <div className="mt-6 flex items-center gap-6 text-sm text-espresso/60">
+        <div className="flex items-center gap-1.5">
+          <div className="flex">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                className="h-4 w-4 fill-gold text-gold"
               />
-            </div>
+            ))}
+          </div>
 
-            {/* Delivery card */}
-            <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{
-                duration: 5,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="absolute -bottom-6 -left-6 hidden rounded-2xl bg-card p-4 shadow-soft sm:block"
-            >
-              <div className="flex items-center gap-3">
-                <div className="grid h-10 w-10 place-items-center rounded-full rose-gradient">
-                  <Truck className="h-4 w-4 text-white" />
-                </div>
+          <span className="font-medium text-espresso">
+            4.9
+          </span>
 
-                <div>
-                  <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                    Delivery
-                  </p>
-
-                  <p className="font-display text-lg leading-none text-espresso">
-                    Today, 2–4 PM
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
+          <span>· 2,400+ reviews</span>
         </div>
-      </section>
+      </div>
+    </motion.div>
+
+    {/* Hero image */}
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        duration: 0.9,
+        delay: 0.1,
+      }}
+      className="relative flex min-h-[calc(100vh-150px)] items-center justify-center"
+    >
+      <div className="relative h-[calc(100vh-150px)] max-h-[700px] w-full overflow-hidden rounded-[2.5rem] shadow-petal">
+        <img
+          src={flowerImageUrls.luxuryRoseBouquet}
+          alt="Red roses arranged with a gift"
+          className="h-full w-full object-cover"
+          width={960}
+          height={1280}
+        />
+      </div>
+    </motion.div>
+
+  </div>
+</section>
 
       {/* CATEGORIES */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
@@ -259,16 +230,31 @@ export default function Home() {
               This week's most-loved
             </h2>
           </div>
-
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {featured.map((product, i) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                index={i}
-              />
-            ))}
-          </div>
+          <AccordionGallery
+            items={featured.map((product) => ({
+              image: product.image,
+              label: product.name,
+              link: `/shop/${product.id}`,
+              alt: product.name,
+            }))}
+            defaultIndex={0}
+            expandRatio={0.52}
+            trigger="hover"
+            accentColor="#ffffff"
+            overlayColor="#3A2420"
+            textColor="#ffffff"
+            grayscale={false}
+            showLabels
+            duration={0.6}
+            ease="power3.out"
+            parallax={0.5}
+            tilt={8}
+            stagger={0.06}
+            height={460}
+            gap={10}
+            radius={16}
+            orientation="horizontal"
+          />
         </div>
       </section>
 
